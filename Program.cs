@@ -5,28 +5,40 @@ int number_time;
 string letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 string digital = "0123456789";
 string special_char = "@#$%&*!";
-int bit=0;
-string password_gen="";
+int bit = 0;
+string password_gen = "";
 int bit_is;
 int gen_time = 0;
+string? input;
+string pool = "";
 Console.WriteLine("欢迎使用 皓叶草密码生成器！");
 Console.WriteLine("");
 while (true)
 {
-    Console.Write("请输入要生成的位数(罗马数字,留空为8位): ");
-    if (int.TryParse(Console.ReadLine(), out int result))
+    Console.Write("请输入要生成的位数(请输入数字(4-96),留空默认为8位,最少4位,最多96位): ");
+    input = Console.ReadLine();
+    if (int.TryParse(input, out int result))
     {
-        password_bit = result;
-        Console.WriteLine($"您的密码位数将生成{password_bit}位");
-        break;
+        if (result >= 4 && result <= 96)
+        {
+            password_bit = result;
+            Console.WriteLine($"您的密码位数将生成{password_bit}位");
+            break;
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine($"您输入的{result}位数暂不支持!");
+        }
     }
-    else if (Console.ReadLine() == "")
+    else if (input == "")
     {
         password_bit = 8;
         Console.WriteLine($"您的密码位数将生成{password_bit}位");
         break;
     }
-    else { 
+    else
+    {
         Console.Clear();
         Console.WriteLine("位数输入错误,请重试!");
     }
@@ -34,31 +46,53 @@ while (true)
 Console.WriteLine("");
 while (true)
 {
-    Console.Write("密码中是否要包含特殊字符(Y为是,N为否): ");
-    if (Console.ReadLine().ToUpper() == "Y")
+    Console.Write("密码中是否要包含特殊字符(Y为是,N为否,留空默认为N): ");
+    input = (Console.ReadLine())?.ToUpper();
+    if (input == "Y")
     {
         is_special_char = true;
         Console.WriteLine("好的,生成的密码将包含特殊字符");
         break;
     }
-    else
+    else if (input == "N")
     {
-        is_special_char= false;
+        is_special_char = false;
         Console.WriteLine("好的,生成的密码将不包含特殊字符");
         break;
+    }
+    else if (input == "")
+    {
+        is_special_char = false;
+        Console.WriteLine("好的,生成的密码将不包含特殊字符");
+        break;
+    }
+    else
+    {
+        Console.Clear();
+        Console.WriteLine("您的输入不合法,请重试!");
     }
 }
 Console.WriteLine("");
 while (true)
 {
-    Console.Write("请输入生成次数(罗马数字,留空为1次): ");
-    if (int.TryParse(Console.ReadLine(), out int result))
+    Console.Write("请输入生成次数(数字(1-32),留空为1次): ");
+    input = Console.ReadLine();
+    if (int.TryParse(input, out int result))
     {
+        if(result>=1 && result <= 32)
+        {
         number_time = result;
         Console.WriteLine($"好的,将生成{number_time}次密码");
         break;
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine($"您的输入次数{result}超出合理范围,请重试!");
+        }
+        
     }
-    else if (Console.ReadLine() == "")
+    else if (input == "")
     {
         number_time = 1;
         Console.WriteLine($"好的,将生成{number_time}次密码");
@@ -69,136 +103,47 @@ while (true)
         Console.Clear();
         Console.WriteLine("次数输入错误,请重试!");
     }
-    
+
 }
 Console.WriteLine("");
-while (true)
+if (is_special_char)
 {
-    gen_time += 1;
-    if (gen_time <= number_time)
-    {
-        while (true)
+    pool = letter + special_char + digital;
+}
+else
 {
-    bit += 1;
-    if (bit <= password_bit)
+    pool = digital + letter;
+}
+    while (true)
     {
-        int bit_type = RandomNumberGenerator.GetInt32(1, 11);
-        if (is_special_char)
+        gen_time += 1;
+        if (gen_time <= number_time)
         {
-            switch (bit_type)
+            while (true)
             {
-                case 1:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
+                bit += 1;
+                if (bit <= password_bit)
+                {
+                    bit_is = RandomNumberGenerator.GetInt32(0, pool.Length);
+                    password_gen += pool[bit_is];
+                }
+                else
+                {
                     break;
-                case 2:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 3:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 4:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 5:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 6:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 7:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 8:
-                    bit_is = RandomNumberGenerator.GetInt32(0, special_char.Length);
-                    password_gen += special_char[bit_is];
-                    break;
-                case 9:
-                    bit_is = RandomNumberGenerator.GetInt32(0, special_char.Length);
-                    password_gen += special_char[bit_is];
-                    break;
-                case 10:
-                    bit_is = RandomNumberGenerator.GetInt32(0, special_char.Length);
-                    password_gen += special_char[bit_is];
-                    break;
-                default:
-                    break;
+                }
             }
         }
         else
         {
-            switch (bit_type)
-            {
-                case 1:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 2:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 3:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 4:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 5:
-                    bit_is = RandomNumberGenerator.GetInt32(0, letter.Length);
-                    password_gen += letter[bit_is];
-                    break;
-                case 6:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 7:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 8:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 9:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                case 10:
-                    bit_is = RandomNumberGenerator.GetInt32(0, digital.Length);
-                    password_gen += digital[bit_is];
-                    break;
-                default:
-                    break;
-            }
+            break;
         }
-    }
-    else
-    {
-        break;
-    }
-
-}
-    }
-    else
-    {
+        if (gen_time == 1)
+        {
+            Console.WriteLine("密码生成完毕,您的密码为: ");
+        }
         Console.WriteLine(password_gen);
-        break;
+        password_gen = "";
+        bit = 0;
     }
-    if (gen_time == 1)
-    {
-        Console.WriteLine("密码生成完毕,您的密码为: ");
-    }
-Console.WriteLine(password_gen);
-    password_gen = "";
-    bit = 0;
-}
 Console.WriteLine("请牢记您的密码,欢迎您下次使用!");
 
