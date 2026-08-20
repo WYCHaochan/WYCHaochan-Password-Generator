@@ -1,9 +1,11 @@
 # WYCHaochan-Password-Generator
 
-![Version](https://img.shields.io/github/v/release/WYCHaochan/WYCHaochan-Password-Generator)
-![License](https://img.shields.io/github/license/WYCHaochan/WYCHaochan-Password-Generator)
-![Platform](https://img.shields.io/badge/platform-Windows-blue)
-![.NET](https://img.shields.io/badge/.NET-8.0-512BD4)
+![Version](https://img.shields.io/github/v/release/WYCHaochan/WYCHaochan-Password-Generator?style=flat-square)
+![License](https://img.shields.io/github/license/WYCHaochan/WYCHaochan-Password-Generator?style=flat-square)
+![Platform](https://img.shields.io/badge/platform-Windows-blue?style=flat-square)
+![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square)
+![Stars](https://img.shields.io/github/stars/WYCHaochan/WYCHaochan-Password-Generator?style=flat-square)
+![Last Commit](https://img.shields.io/github/last-commit/WYCHaochan/WYCHaochan-Password-Generator?style=flat-square)
 
 **皓叶草密码生成器**
 
