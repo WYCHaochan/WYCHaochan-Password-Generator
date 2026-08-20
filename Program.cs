@@ -5,12 +5,11 @@ int number_time;
 string letter = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 string digital = "0123456789";
 string special_char = "@#$%&*!";
-int bit = 0;
 string password_gen = "";
 int bit_is;
-int gen_time = 0;
 string? input;
 string pool = "";
+int linshijishu = 0;
 Console.WriteLine("欢迎使用 皓叶草密码生成器！");
 while (true)
 {
@@ -30,37 +29,28 @@ while (true)
     {
         pool = digital + letter;
     }
-    while (true)
+    for (int gen_time = 1; gen_time <= number_time; gen_time++)
     {
-        gen_time += 1;
-        if (gen_time <= number_time)
+        do
         {
-            while (true)
+            linshijishu += 1;
+            password_gen = "";
+            for (int bit = 1; bit <= password_length; bit++)
             {
-                bit += 1;
-                if (bit <= password_length)
-                {
-                    bit_is = RandomNumberGenerator.GetInt32(0, pool.Length);
-                    password_gen += pool[bit_is];
-                }
-                else
-                {
-                    break;
-                }
+                bit_is = RandomNumberGenerator.GetInt32(0, pool.Length);
+                password_gen += pool[bit_is];
             }
-        }
-        else
-        {
-            break;
-        }
+
+        } while (!CheckPassword(password_gen, is_special_char));
         if (gen_time == 1)
         {
             Console.WriteLine("密码生成完毕,您的密码为: ");
         }
         Console.WriteLine(password_gen);
         password_gen = "";
-        bit = 0;
     }
+    Console.WriteLine();
+    Console.WriteLine($"[调试]实际生成了{linshijishu}次");
     Console.WriteLine();
     Console.WriteLine("请牢记您的密码,如果重新生成将会清除当前密码显示");
     Console.WriteLine();
@@ -69,9 +59,8 @@ while (true)
     if (input == "Y")
     {
         pool = "";
-        bit = 0;
         password_gen = "";
-        gen_time = 0;
+        linshijishu = 0;
         Console.Clear();
         Console.Write("好的,欢迎您再次使用 皓叶草密码生成器!");
 
@@ -185,7 +174,71 @@ while (true)
             }
         }
     }
-    void OutputInfo(int password_length,bool is_spcial_char,int number_time)
+    static bool CheckPassword(string password, bool is_special_char)
+    {
+        bool is_upletter = false;
+        bool is_lowletter = false;
+        bool is_digit = false;
+        bool is_special = false;
+
+        if (is_special_char)
+        {
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c))
+                {
+                    is_upletter = true;
+                }
+                if (char.IsLower(c))
+                {
+                    is_lowletter = true;
+                }
+                if (char.IsDigit(c))
+                {
+                    is_digit = true;
+                }
+                if (c.Equals('@') || c.Equals('#') || c.Equals('$') || c.Equals('%') || c.Equals('&') || c.Equals('*') || c.Equals('!'))
+                {
+                    is_special = true;
+                }
+            }
+            if (is_upletter && is_lowletter && is_digit && is_special)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c))
+                {
+                    is_upletter = true;
+                }
+                if (char.IsLower(c))
+                {
+                    is_lowletter = true;
+                }
+                if (char.IsDigit(c))
+                {
+                    is_digit = true;
+                }
+            }
+            if (is_upletter && is_lowletter && is_digit)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+    void OutputInfo(int password_length, bool is_spcial_char, int number_time)
     {
         Console.WriteLine("======生成密码配置如下======");
         Console.WriteLine($"生成密码长度: {password_length}位");
